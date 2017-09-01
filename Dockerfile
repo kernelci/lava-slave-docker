@@ -22,7 +22,8 @@ RUN \
  qemu-system \
  qemu-system-arm \
  qemu-system-i386 \
- qemu-kvm 
+ qemu-kvm \
+ e2fsprogs
 
 RUN \
  git clone https://github.com/kernelci/lava-server.git -b release /root/lava-server && \
