@@ -53,6 +53,6 @@ COPY configs/tftpd-hpa /etc/default/tftpd-hpa
 #TODO made this customizable, 1000 ports by default is too much
 RUN sed -i 's,XNBD_PORT_RANGE_MIN.*,XNBD_PORT_RANGE_MIN=55950,' /usr/lib/python2.7/dist-packages/lava_dispatcher/pipeline/utils/constants.py
 
-EXPOSE 69/udp
+EXPOSE 69/udp 80
 
-CMD /start.sh && bash
+CMD /start.sh
