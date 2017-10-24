@@ -3,6 +3,10 @@
 if [[ -n "$LAVA_MASTER" ]]; then
 	sed -i -e "s/{LAVA_MASTER}/$LAVA_MASTER/g" /etc/lava-dispatcher/lava-slave
 fi
-service tftpd-hpa start
-service lava-slave start
+
+service tftpd-hpa start || exit 4
+
+# FIXME lava-slave does not run if old pid is present
+rm -f /var/run/lava-slave.pid
+service lava-slave start || exit 5
 
