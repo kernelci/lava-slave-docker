@@ -28,16 +28,23 @@ RUN \
  xnbd-server \
  e2fsprogs
 
-RUN \
- git clone https://github.com/kernelci/lava-server.git -b release /root/lava-server && \
- git clone https://github.com/kernelci/lava-dispatcher.git -b master /root/lava-dispatcher && \
- cd /root/lava-dispatcher && \
- git checkout release && \
- git config --global user.name "Docker Build" && \
- git config --global user.email "info@kernelci.org" && \
- echo "cd \${DIR} && dpkg -i *.deb" >> /root/lava-server/share/debian-dev-build.sh && \
- sleep 2 && \
- /root/lava-server/share/debian-dev-build.sh -p lava-dispatcher
+RUN wget http://images.validation.linaro.org/production-repo/production-repo.key.asc \
+ && apt-key add production-repo.key.asc \
+ && echo 'deb http://images.validation.linaro.org/production-repo/ stretch-backports main' > /etc/apt/sources.list.d/lava.list \
+ && apt-get clean && apt-get update
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install lava-dispatcher
+
+#RUN \
+# git clone https://github.com/kernelci/lava-server.git -b release /root/lava-server && \
+# git clone https://github.com/kernelci/lava-dispatcher.git -b master /root/lava-dispatcher && \
+# cd /root/lava-dispatcher && \
+# git checkout release && \
+# git config --global user.name "Docker Build" && \
+# git config --global user.email "info@kernelci.org" && \
+# echo "cd \${DIR} && dpkg -i *.deb" >> /root/lava-server/share/debian-dev-build.sh && \
+# sleep 2 && \
+# /root/lava-server/share/debian-dev-build.sh -p lava-dispatcher
 
 COPY configs/lava-slave /etc/lava-dispatcher/lava-slave
 
